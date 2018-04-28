@@ -58,7 +58,7 @@ class UserFixtures extends Fixture
             $rate->setCurrency($currency)->setRate(self::$rates[$item]);
 
             $currencies[] = $currency;
-            $rates[$currency->getCode()] = $rate;
+            $rates[$currency->getCode()] = self::$rates[$item];
 
             $manager->persist($rate);
             $manager->persist($currency);
@@ -102,17 +102,22 @@ class UserFixtures extends Fixture
 
 //        $manager->flush();
 
+        $transactions = [];
         // Fake transitions
         foreach ($accounts as $account) {
             /** @var Account[] $externalAccounts */
             $externalAccounts = $faker->randomElements($accounts, 10);
             foreach ($externalAccounts as $externalAccount) {
-                if ($externalAccount->getId() === $account->getId()) {
+
+                if ($externalAccount === $account) {
                     continue;
                 }
-
                 $outcome = $faker->randomFloat(2, 10, 50);
-                $income = bcmul(bcdiv($outcome, $rates[$account->getCurrency()], 2), $rates[$externalAccount->getCurrency()], 2);
+                $income = bcmul(
+                    bcdiv($outcome, $rates[$account->getCurrency()->getCode()], 2),
+                    $rates[$externalAccount->getCurrency()->getCode()],
+                    2
+                );
 
                 $transaction = new Transaction();
                 $transaction
@@ -129,6 +134,12 @@ class UserFixtures extends Fixture
                     ->setIncome($income);
 
                 $externalAccount->setTotal(bcadd($externalAccount->getTotal(), $income, 2));
+
+                $manager->persist($relatedTransaction);
+                $manager->persist($transaction);
+
+                $transactions[] = $relatedTransaction;
+                $transactions[] = $transaction;
             }
         }
 

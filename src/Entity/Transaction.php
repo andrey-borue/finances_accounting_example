@@ -22,14 +22,14 @@ class Transaction
     /**
      * @var string
      *
-     * @ORM\Column(type="decimal", precision=2, nullable=true)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $income;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="decimal", precision=2, nullable=true)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $outcome;
 

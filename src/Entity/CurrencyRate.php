@@ -20,7 +20,7 @@ class CurrencyRate
     private $id;
 
     /**
-     * @ORM\Column(type="decimal", precision=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     private $rate;
 
