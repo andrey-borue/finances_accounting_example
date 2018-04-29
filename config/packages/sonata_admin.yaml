@@ -3,8 +3,29 @@ sonata_admin:
     dashboard:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
+    templates:
+      layout: layout.html.twig
 
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [admin]
+
+
+services:
+    admin.user:
+        class: App\Admin\UserAdmin
+        arguments: [~, App\Entity\User, ~]
+        calls:
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Users, group: Main, audit: false }
+        public: true
+
+    admin.transaction:
+        class: App\Admin\TransactionAdmin
+        arguments: [~, App\Entity\Transaction, ~]
+        calls:
+          - ['setTemplate', ['list', 'TransactionAdmin/list.html.twig']]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Transactions, group: Main, audit: false }
+        public: true

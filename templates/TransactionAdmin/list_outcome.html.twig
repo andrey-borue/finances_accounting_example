@@ -1,0 +1,12 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{# @var \App\Entity\Transaction object #}
+{% block field %}
+  {# just example #}
+  {% if value %}
+
+   {{ object.outcomeOrigin|number_format_currency('USD', [], [], 'ru_RU') }}
+    <br />
+   {{ value|number_format_currency(object.account.currency, [], [], 'ru_RU') }}
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{#{% extends get_global_template('base_list', admin.code) %}#}
+{% extends '@SonataAdminBundle/CRUD/base_list.html.twig' %}
+{#@SonataAdmin/CRUD/show.html.twig#}
+{% block list_header %}
+  {% set total = getTransactionTotalData() %}
+
+  <b>Total</b> income: {{ total.income }}, income USD: {{ total.income_origin }},
+  outcome: {{ total.outcome }}, income USD: {{ total.outcome_origin }}
+{% endblock %}

@@ -31,7 +31,21 @@ class Transaction
      *
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
+    private $incomeOrigin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
     private $outcome;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $outcomeOrigin;
 
     /**
      * @var Account
@@ -65,6 +79,18 @@ class Transaction
         return $this;
     }
 
+    public function getIncomeOrigin(): ?string
+    {
+        return $this->incomeOrigin;
+    }
+
+    public function setIncomeOrigin(string $incomeOrigin): self
+    {
+        $this->incomeOrigin = $incomeOrigin;
+
+        return $this;
+    }
+
     public function getOutcome(): ?string
     {
         return $this->outcome;
@@ -76,6 +102,19 @@ class Transaction
 
         return $this;
     }
+
+    public function getOutcomeOrigin(): ?string
+    {
+        return $this->outcomeOrigin;
+    }
+
+    public function setOutcomeOrigin(string $outcomeOrigin): self
+    {
+        $this->outcomeOrigin = $outcomeOrigin;
+
+        return $this;
+    }
+
 
     public function getAccount(): ?Account
     {

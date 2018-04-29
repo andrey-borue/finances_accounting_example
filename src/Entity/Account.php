@@ -75,4 +75,13 @@ class Account
 
         return $this;
     }
+
+    public function __toString()
+    {
+        if (!$this->getId()) {
+            return 'New Account';
+        }
+
+        return (string)$this->getTotal();
+    }
 }

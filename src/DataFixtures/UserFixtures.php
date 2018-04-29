@@ -87,11 +87,15 @@ class UserFixtures extends Fixture
 
             $manager->persist($account);
 
-            for ($j = 1; $j < 2; $j++) {
+            for ($j = 1; $j <= 2; $j++) {
                 $transaction = new Transaction();
                 $transaction
                     ->setAccount($account)
                     ->setIncome((string)$faker->randomFloat(2, 1000, 2000));
+
+                $transaction->setIncomeOrigin(
+                    bcdiv($transaction->getIncome(), $rates[$account->getCurrency()->getCode()], 2)
+                );
 
                 $transaction->setAccount($account);
                 $account->setTotal(bcadd($account->getTotal(), $transaction->getIncome(), 2));
@@ -112,18 +116,17 @@ class UserFixtures extends Fixture
                 if ($externalAccount === $account) {
                     continue;
                 }
-                $outcome = $faker->randomFloat(2, 10, 50);
-                $income = bcmul(
-                    bcdiv($outcome, $rates[$account->getCurrency()->getCode()], 2),
-                    $rates[$externalAccount->getCurrency()->getCode()],
-                    2
-                );
+                $outcome = $faker->randomFloat(2, 40, 100);
+                $outcomeOrigin = bcdiv($outcome, $rates[$account->getCurrency()->getCode()], 2);
+
+                $income = bcmul($outcomeOrigin, $rates[$externalAccount->getCurrency()->getCode()], 2);
 
                 $transaction = new Transaction();
                 $transaction
                     ->setAccount($account)
                     ->setExternalAccount($externalAccount)
-                    ->setOutcome($outcome);
+                    ->setOutcome($outcome)
+                    ->setOutcomeOrigin($outcomeOrigin);
 
                 $account->setTotal(bcsub($account->getTotal(), $outcome, 2));
 
@@ -131,7 +134,8 @@ class UserFixtures extends Fixture
                 $relatedTransaction
                     ->setAccount($externalAccount)
                     ->setExternalAccount($account)
-                    ->setIncome($income);
+                    ->setIncome($income)
+                    ->setIncomeOrigin($outcomeOrigin);
 
                 $externalAccount->setTotal(bcadd($externalAccount->getTotal(), $income, 2));
 

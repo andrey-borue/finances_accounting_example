@@ -40,4 +40,9 @@ class Currency
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getCode() ?: 'New currency';
+    }
 }

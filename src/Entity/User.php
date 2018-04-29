@@ -117,4 +117,9 @@ class User
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return (string)($this->getName() ?: $this->getId() ?: 'New user');
+    }
 }
