@@ -1,3 +1,18 @@
-controllers:
-    resource: ../../src/Controller/
-    type: annotation
+#controllers:
+#    resource: ../../src/Controller/
+#    type: annotation
+
+Users:
+    type: rest
+    resource: App\Controller\UserController
+    prefix: /api
+
+Account:
+    type: rest
+    resource: App\Controller\AccountController
+    prefix: /api
+
+Currency:
+    type: rest
+    resource: App\Controller\CurrencyController
+    prefix: /api
